@@ -31,5 +31,5 @@
 先读 [如何阅读](/guide/how-to-read),挑一条适合你的路线;再看 [金字塔写作方法](/guide/writing-style),它既是本书的写法,也是你能直接用在答辩里的技能。准备好了就从 [技术全景图](/guide/tech-landscape) 开始建立整体认知。
 
 ::: tip 这是一本"活"的书
-全书各篇都已写实,但它会随项目继续生长。想新增或修订章节,照样板(见 [如何阅读](/guide/how-to-read) 里标 ★ 的章节)和仓库 `CLAUDE.md` 的约定来即可。
+全书各篇都已写实,但它会随项目继续生长。想新增或修订章节,照范例章节([需求工程](/theory/02-requirements)、[认证模块](/project/auth)、[Spring Boot 卡](/stack/spring-boot))和仓库 `CLAUDE.md` 的约定来即可。
 :::

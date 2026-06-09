@@ -15,7 +15,7 @@
 ## 技术卡索引
 
 ### 后端
-- [Spring Boot ★](/stack/spring-boot) —— 后端骨架
+- [Spring Boot](/stack/spring-boot) —— 后端骨架
 - [Spring Security](/stack/spring-security) —— 认证与授权
 - [MyBatis-Plus](/stack/mybatis-plus) —— 操作数据库
 - [MySQL 8](/stack/mysql) —— 关系型数据库
@@ -29,7 +29,7 @@
 ### 部署
 - [Docker Compose](/stack/docker) —— 容器编排
 
-> ★ [Spring Boot](/stack/spring-boot) 是已完整写好的样板卡,新增技术卡请照它的结构来。
+> [Spring Boot](/stack/spring-boot) 卡结构最完整,新增技术卡请照它的五段式来写。
 
 ## 一句话看懂分层
 

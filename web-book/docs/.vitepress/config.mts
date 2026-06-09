@@ -41,8 +41,8 @@ export default defineConfig({
           items: [
             { text: '序言:这本书是什么', link: '/guide/preface' },
             { text: '如何阅读', link: '/guide/how-to-read' },
-            { text: '金字塔写作方法 ★', link: '/guide/writing-style' },
-            { text: '技术全景图 ★', link: '/guide/tech-landscape' }
+            { text: '金字塔写作方法', link: '/guide/writing-style' },
+            { text: '技术全景图', link: '/guide/tech-landscape' }
           ]
         }
       ],
@@ -52,7 +52,7 @@ export default defineConfig({
           items: [
             { text: '本篇导读', link: '/theory/' },
             { text: '1 · 软件工程概述', link: '/theory/01-overview' },
-            { text: '2 · 软件需求工程 ★', link: '/theory/02-requirements' },
+            { text: '2 · 软件需求工程', link: '/theory/02-requirements' },
             { text: '3 · 软件设计(结构化/面向对象/UML)', link: '/theory/03-design' },
             { text: '4 · 软件实现', link: '/theory/04-implementation' },
             { text: '5 · 软件测试', link: '/theory/05-testing' },
@@ -67,7 +67,7 @@ export default defineConfig({
             { text: '本篇导读', link: '/project/' },
             { text: '需求分析', link: '/project/requirements' },
             { text: '数据库设计', link: '/project/database' },
-            { text: '认证模块:注册与登录 ★', link: '/project/auth' },
+            { text: '认证模块:注册与登录', link: '/project/auth' },
             { text: '用户管理(管理员)', link: '/project/user-management' },
             { text: '后端架构与分层', link: '/project/backend' },
             { text: '前端架构', link: '/project/frontend' },
@@ -81,7 +81,7 @@ export default defineConfig({
           text: '④ 技术栈图鉴',
           items: [
             { text: '本篇导读', link: '/stack/' },
-            { text: 'Spring Boot ★', link: '/stack/spring-boot' },
+            { text: 'Spring Boot', link: '/stack/spring-boot' },
             { text: 'Spring Security', link: '/stack/spring-security' },
             { text: 'MyBatis-Plus', link: '/stack/mybatis-plus' },
             { text: 'MySQL 8', link: '/stack/mysql' },

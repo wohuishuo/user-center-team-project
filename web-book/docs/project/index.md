@@ -20,14 +20,14 @@
 | --- | --- |
 | [需求分析](/project/requirements) | 功能清单、用例、边界 |
 | [数据库设计](/project/database) | user 表字段、索引、逻辑删除 |
-| [认证模块 ★](/project/auth) | 注册/登录的 2026 安全实现(BCrypt + JWT) |
+| [认证模块](/project/auth) | 注册/登录的安全实现(BCrypt + JWT) |
 | [用户管理](/project/user-management) | 权限控制、分页查询 |
 | [后端架构与分层](/project/backend) | Controller / Service / Mapper |
 | [前端架构](/project/frontend) | React 19 + Vite + Ant Design 5 |
 | [测试](/project/testing) | 单元测试、集成测试 |
 | [部署上线](/project/deployment) | Docker Compose + CI/CD |
 
-> ★ [认证模块](/project/auth) 是已完整写好的样板章节,适合作为填写其余章节的范例。
+> [认证模块](/project/auth) 是实战篇结构最完整的一章,适合作为新增章节的范例。
 
 ::: tip 先看全景再动手
 动手前先扫一眼 [技术全景图](/guide/tech-landscape),知道每个技术解决什么问题、彼此怎么协作,再回来从需求开始做,会顺很多。
