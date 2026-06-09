@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用户中心项目 · 3分钟概览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #0a0a14;
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ─── SLIDES ─── */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 48px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .6s ease, transform .6s ease;
+    pointer-events: none;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6c63ff, #48cfad);
+    transition: width .4s ease;
+    z-index: 100;
+  }
+
+  /* ─── NAV ─── */
+  #nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    z-index: 100;
+    background: rgba(255,255,255,.07);
+    padding: 10px 20px;
+    border-radius: 40px;
+    backdrop-filter: blur(10px);
+  }
+  #nav button {
+    background: none;
+    border: 1px solid rgba(255,255,255,.25);
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all .2s;
+  }
+  #nav button:hover { background: rgba(255,255,255,.15); }
+  #nav button:disabled { opacity: .3; cursor: default; }
+  #slide-counter { font-size: 12px; opacity: .5; min-width: 50px; text-align: center; }
+
+  /* ─── AUTO PLAY ─── */
+  #autoplay-btn {
+    position: fixed;
+    top: 18px; right: 18px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.2);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    z-index: 100;
+    transition: all .2s;
+  }
+  #autoplay-btn:hover { background: rgba(255,255,255,.18); }
+
+  /* ─── TYPOGRAPHY ─── */
+  .label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: .45;
+    margin-bottom: 16px;
+  }
+  h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 700; line-height: 1.15; }
+  h2 { font-size: clamp(22px, 3.5vw, 38px); font-weight: 700; line-height: 1.25; }
+  p  { font-size: 16px; line-height: 1.7; opacity: .75; max-width: 620px; }
+
+  .accent  { color: #6c63ff; }
+  .green   { color: #48cfad; }
+  .yellow  { color: #fed766; }
+  .red-ish { color: #ff6b6b; }
+
+  /* ─── PYRAMID ─── */
+  .pyramid-wrap {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .pyr-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+  .pyr-top    { justify-content: center; }
+  .pyr-mid    { justify-content: center; }
+  .pyr-bottom { justify-content: center; }
+
+  .pyr-box {
+    border-radius: 10px;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .pyr-box.show { opacity: 1; transform: translateY(0); }
+
+  .pyr-box.top    { background: linear-gradient(135deg,#6c63ff,#8b5cf6); min-width: 260px; font-size: 17px; }
+  .pyr-box.mid    { background: rgba(72,207,173,.18); border: 1px solid rgba(72,207,173,.4); min-width: 150px; }
+  .pyr-box.bottom { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); min-width: 120px; font-size: 12px; font-weight: 400; }
+
+  /* ─── CARDS ─── */
+  .cards {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 860px;
+    width: 100%;
+  }
+  .card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px;
+    padding: 20px 22px;
+    flex: 1 1 200px;
+    max-width: 240px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .card.show { opacity: 1; transform: translateY(0); }
+  .card-icon { font-size: 26px; margin-bottom: 8px; }
+  .card h3   { font-size: 14px; margin-bottom: 6px; }
+  .card p    { font-size: 12px; opacity: .6; line-height: 1.5; }
+
+  /* ─── STACK ─── */
+  .stack-wrap {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 820px;
+  }
+  .stack-col { min-width: 200px; }
+  .stack-col h3 { font-size: 12px; letter-spacing: 2px; opacity: .45; margin-bottom: 10px; }
+  .tag {
+    display: inline-block;
+    background: rgba(108,99,255,.2);
+    border: 1px solid rgba(108,99,255,.4);
+    border-radius: 6px;
+    padding: 5px 11px;
+    font-size: 13px;
+    margin: 3px;
+  }
+  .tag.green-tag {
+    background: rgba(72,207,173,.15);
+    border-color: rgba(72,207,173,.4);
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 560px;
+    width: 100%;
+  }
+  .tl-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .tl-item.show { opacity: 1; transform: translateX(0); }
+  .tl-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#6c63ff,#48cfad);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .tl-content h3 { font-size: 15px; margin-bottom: 4px; }
+  .tl-content p  { font-size: 12px; opacity: .55; }
+
+  /* ─── AI WORKFLOW ─── */
+  .flow-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 860px;
+  }
+  .flow-box {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+    padding: 14px 18px;
+    text-align: center;
+    min-width: 120px;
+    opacity: 0;
+    transform: scale(.9);
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .flow-box.show { opacity: 1; transform: scale(1); }
+  .flow-box .fi { font-size: 22px; margin-bottom: 6px; }
+  .flow-box span { font-size: 12px; opacity: .7; }
+  .flow-arrow { font-size: 18px; opacity: .35; }
+
+  /* ─── TITLE SLIDE ─── */
+  #s0 { background: radial-gradient(ellipse at 30% 50%, rgba(108,99,255,.25) 0%, transparent 60%),
+                     radial-gradient(ellipse at 70% 60%, rgba(72,207,173,.15) 0%, transparent 50%); }
+  .hero-sub { font-size: 15px; opacity: .5; margin-top: 10px; }
+  .hero-tag {
+    margin-top: 28px;
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  }
+  .hero-tag span {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    opacity: .7;
+  }
+
+  /* ─── NARRATION BOX ─── */
+  .narration {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,.6);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 13px;
+    opacity: .7;
+    max-width: 600px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    line-height: 1.5;
+    transition: opacity .4s;
+    z-index: 50;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<button id="autoplay-btn">▶ 自动播放</button>
+
+<!-- ══════════ SLIDE 0 · TITLE ══════════ -->
+<div class="slide active" id="s0">
+  <div class="label">项目概览 · 3分钟速通</div>
+  <h1>用户中心<br><span class="accent">User Center</span></h1>
+  <p class="hero-sub">企业级全栈项目 · 登录注册 · 用户管理</p>
+  <div class="hero-tag">
+    <span>Java Spring Boot</span>
+    <span>React + Ant Design Pro</span>
+    <span>MySQL + MyBatis-Plus</span>
+    <span>2022 → 2026 AI 复现</span>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 1 · 金字塔结论 ══════════ -->
+<div class="slide" id="s1">
+  <div class="label">金字塔 · 核心结论</div>
+  <h2 style="margin-bottom:28px">一句话说清楚</h2>
+  <div class="pyramid-wrap">
+    <div class="pyr-row pyr-top">
+      <div class="pyr-box top" id="py0">
+        统一管理多系统用户身份的全栈项目
+      </div>
+    </div>
+    <div class="pyr-row pyr-mid" style="gap:12px">
+      <div class="pyr-box mid" id="py1">WHY<br><small style="font-weight:400;opacity:.7">解决重复注册</small></div>
+      <div class="pyr-box mid" id="py2">WHAT<br><small style="font-weight:400;opacity:.7">注册/登录/管理</small></div>
+      <div class="pyr-box mid" id="py3">HOW<br><small style="font-weight:400;opacity:.7">前后端全栈实现</small></div>
+    </div>
+    <div class="pyr-row pyr-bottom" style="gap:8px">
+      <div class="pyr-box bottom" id="py4">Spring Boot</div>
+      <div class="pyr-box bottom" id="py5">React + ADP</div>
+      <div class="pyr-box bottom" id="py6">MySQL</div>
+      <div class="pyr-box bottom" id="py7">Docker 部署</div>
+      <div class="pyr-box bottom" id="py8">Session 登录态</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 2 · WHY ══════════ -->
+<div class="slide" id="s2">
+  <div class="label">WHY · 为什么做</div>
+  <h2 style="margin-bottom:24px">多个系统，用户数据<span class="accent">孤立</span>怎么办？</h2>
+  <div class="cards" id="why-cards">
+    <div class="card">
+      <div class="card-icon">😤</div>
+      <h3>用户痛点</h3>
+      <p>每个平台都要注册账号，重复填写资料，体验割裂</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏢</div>
+      <h3>企业痛点</h3>
+      <p>多套系统各自维护用户表，数据无法打通，权限混乱</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💡</div>
+      <h3>解决方案</h3>
+      <p>抽离为独立服务——类似腾讯 QQ 号、支付宝账号的统一管控模式</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎓</div>
+      <h3>学习价值</h3>
+      <p>掌握企业级项目从需求→设计→开发→部署的完整流程</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 3 · WHAT ══════════ -->
+<div class="slide" id="s3">
+  <div class="label">WHAT · 做什么</div>
+  <h2 style="margin-bottom:24px">三个核心功能</h2>
+  <div class="cards" id="what-cards">
+    <div class="card">
+      <div class="card-icon">🔐</div>
+      <h3 class="green">注册 / 登录</h3>
+      <p>账号密码注册，MD5加盐加密存储，Session 管理登录态，支持注销</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">👥</div>
+      <h3 class="accent">用户管理</h3>
+      <p>管理员专属后台：搜索/查看/删除用户，逻辑删除保留数据，权限校验</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">✅</div>
+      <h3 class="yellow">用户校验</h3>
+      <p>星球编号校验，防止恶意注册，前后端双重校验，特殊字符过滤</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 4 · WHO / WHEN / WHERE ══════════ -->
+<div class="slide" id="s4">
+  <div class="label">WHO · WHEN · WHERE</div>
+  <h2 style="margin-bottom:26px">谁、什么时候、在哪里</h2>
+  <div class="cards" id="www-cards">
+    <div class="card">
+      <div class="card-icon">👤</div>
+      <h3>WHO</h3>
+      <p><b>用户：</b>注册/登录/注销<br><b>管理员：</b>后台管理全部用户<br><b>你的团队：</b>复现 + 作业提交</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📅</div>
+      <h3>WHEN</h3>
+      <p>原始课程 <b>2022年3月</b> 开发<br>2026年用 <b>Claude Code</b> 现代化复现<br>交作业 deadline 前完成</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <h3>WHERE</h3>
+      <p>前端：<b>localhost:8000</b><br>后端：<b>localhost:8080</b><br>线上：服务器 / Docker 部署</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 5 · HOW (技术栈) ══════════ -->
+<div class="slide" id="s5">
+  <div class="label">HOW · 技术栈</div>
+  <h2 style="margin-bottom:24px">前后端分离全栈架构</h2>
+  <div class="stack-wrap" id="stack-wrap">
+    <div class="stack-col">
+      <h3>前端</h3>
+      <span class="tag">React</span>
+      <span class="tag">Ant Design Pro</span>
+      <span class="tag">Umi</span>
+      <span class="tag">TypeScript</span>
+      <span class="tag">ProComponents</span>
+    </div>
+    <div class="stack-col">
+      <h3>后端</h3>
+      <span class="tag green-tag">Spring Boot</span>
+      <span class="tag green-tag">MyBatis-Plus</span>
+      <span class="tag green-tag">MySQL 5.7</span>
+      <span class="tag green-tag">Spring MVC</span>
+      <span class="tag green-tag">Lombok</span>
+    </div>
+    <div class="stack-col">
+      <h3>部署</h3>
+      <span class="tag" style="background:rgba(254,215,102,.12);border-color:rgba(254,215,102,.35)">Docker</span>
+      <span class="tag" style="background:rgba(254,215,102,.12);border-color:rgba(254,215,102,.35)">Nginx</span>
+      <span class="tag" style="background:rgba(254,215,102,.12);border-color:rgba(254,215,102,.35)">宝塔面板</span>
+      <span class="tag" style="background:rgba(254,215,102,.12);border-color:rgba(254,215,102,.35)">多环境配置</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 6 · HOW (开发流程) ══════════ -->
+<div class="slide" id="s6">
+  <div class="label">HOW · 企业开发流程</div>
+  <h2 style="margin-bottom:24px">8步标准流程</h2>
+  <div class="timeline" id="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">1</div>
+      <div class="tl-content">
+        <h3>需求分析</h3>
+        <p>登录/注册、用户管理（仅管理员）、星球用户校验</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">2</div>
+      <div class="tl-content">
+        <h3>数据库设计</h3>
+        <p>用户表：id / userAccount / userPassword / role / isDelete / createTime…</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">3</div>
+      <div class="tl-content">
+        <h3>后端开发</h3>
+        <p>Controller → Service → Mapper 分层，MyBatisX 自动生成代码</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">4</div>
+      <div class="tl-content">
+        <h3>前端开发</h3>
+        <p>Ant Design Pro 模板瘦身，对接后端接口，权限路由控制</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">5</div>
+      <div class="tl-content">
+        <h3>代码优化 + 测试</h3>
+        <p>通用返回对象、全局异常处理、单元测试覆盖注册/登录逻辑</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">6</div>
+      <div class="tl-content">
+        <h3>部署上线</h3>
+        <p>Docker 容器化 → Nginx 反代 → 多环境配置（dev/prod）</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 7 · AI 工作流 (2026) ══════════ -->
+<div class="slide" id="s7">
+  <div class="label">2026 版 · Claude Code 工作流</div>
+  <h2 style="margin-bottom:8px">用 AI 把 <span class="accent">3周</span> 压缩到 <span class="green">3天</span></h2>
+  <p style="margin-bottom:28px;font-size:14px">原项目 2022 年手写每一行代码，现在这样做：</p>
+  <div class="flow-wrap" id="flow-wrap">
+    <div class="flow-box">
+      <div class="fi">📚</div>
+      <span>喂入笔记<br>+ 作业模板</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">
+      <div class="fi">🧠</div>
+      <span>CC 生成<br>项目骨架</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">
+      <div class="fi">⚡</div>
+      <span>CC 写<br>业务逻辑</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">
+      <div class="fi">🧪</div>
+      <span>CC 生成<br>单元测试</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">
+      <div class="fi">📄</div>
+      <span>Cowork<br>填作业文档</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">
+      <div class="fi">🚀</div>
+      <span>Docker<br>一键部署</span>
+    </div>
+  </div>
+  <p style="margin-top:24px;font-size:13px;opacity:.45">Claude Code 负责写代码 · Cowork 负责写文档 · 你负责决策和审查</p>
+</div>
+
+<!-- ══════════ SLIDE 8 · 作业对应 ══════════ -->
+<div class="slide" id="s8">
+  <div class="label">作业对应关系</div>
+  <h2 style="margin-bottom:24px">这个项目 <span class="green">满足</span> 哪些提交要求</h2>
+  <div class="cards" id="hw-cards">
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3>需求规格说明书</h3>
+      <p>登录/注册/用户管理需求已明确，用例清晰，可直接对应模板</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🗂️</div>
+      <h3>系统设计说明书</h3>
+      <p>三层架构 + 数据库设计完整，ER图、时序图均可从代码反向生成</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🗃️</div>
+      <h3>数据设计说明书</h3>
+      <p>用户表字段设计完整，含类型/约束/注释，直接填入模板</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧪</div>
+      <h3>软件测试报告</h3>
+      <p>注册/登录8个测试用例已覆盖边界条件，可直接转为测试报告</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SLIDE 9 · 下一步行动 ══════════ -->
+<div class="slide" id="s9">
+  <div class="label">行动计划</div>
+  <h2 style="margin-bottom:24px">接下来 <span class="accent">三步走</span></h2>
+  <div class="timeline" id="action-timeline">
+    <div class="tl-item">
+      <div class="tl-dot" style="background:linear-gradient(135deg,#ff6b6b,#feca57)">①</div>
+      <div class="tl-content">
+        <h3>用 Claude Code 复现项目代码</h3>
+        <p>把笔记喂给 CC → 生成 Spring Boot 后端 + React 前端 → 跑通登录注册流程</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:linear-gradient(135deg,#6c63ff,#48cfad)">②</div>
+      <div class="tl-content">
+        <h3>用 Cowork 填写作业文档</h3>
+        <p>Cowork 读取代码 + 课件 → 自动填入需求规格/系统设计/测试报告模板</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:linear-gradient(135deg,#48cfad,#2ecc71)">③</div>
+      <div class="tl-content">
+        <h3>Docker 部署 + 提交</h3>
+        <p>打包镜像 → 服务器部署 → 截图 → 连同文档一起提交</p>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top:24px;font-size:14px;opacity:.5">预估：代码复现 1-2天 · 文档填写 半天 · 部署 2小时</p>
+</div>
+
+<!-- NARRATION -->
+<div class="narration" id="narration">按 → 或点击"下一页"开始</div>
+
+<!-- NAV -->
+<div id="nav">
+  <button id="prev-btn" disabled>← 上一页</button>
+  <span id="slide-counter">1 / 10</span>
+  <button id="next-btn">下一页 →</button>
+</div>
+
+<script>
+const narrations = [
+  "这是用户中心项目的3分钟快速概览，帮助团队在开始前对齐认知。",
+  "用金字塔原则来理解：核心结论是「统一管理多系统用户身份」，支撑它的三根柱子是 WHY/WHAT/HOW。",
+  "为什么要做这个项目？本质是解决多平台用户数据孤立的问题，同时掌握企业级项目的完整开发流程。",
+  "做什么？三个核心功能：注册/登录、管理员后台、用户校验。原项目特意控制代码量，重在理解架构。",
+  "谁来用？什么时候？在哪？——普通用户登录，管理员管理，你们团队现在复现，本地开发，服务器上线。",
+  "技术栈：前端用 React + Ant Design Pro 快速搭建管理系统，后端用 Spring Boot + MyBatis-Plus 极简 CRUD。",
+  "企业级开发的标准8步流程：需求 → 设计 → 后端 → 前端 → 优化测试 → 部署。这是作业文档的骨架。",
+  "2026年的做法：用 Claude Code 写代码，用 Cowork 写文档。把原来3周的工作压缩到3天。",
+  "对应你的4份作业模板：需求规格、系统设计、数据设计、测试报告——项目里全都有对应内容，直接填。",
+  "行动计划三步：CC复现代码 → Cowork填文档 → Docker部署提交。预计总耗时 2-3天。"
+];
+
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+let autoTimer = null;
+let isAutoPlay = false;
+
+const progressBar = document.getElementById('progress');
+const narrationEl = document.getElementById('narration');
+const counter    = document.getElementById('slide-counter');
+const prevBtn    = document.getElementById('prev-btn');
+const nextBtn    = document.getElementById('next-btn');
+const autoBtn    = document.getElementById('autoplay-btn');
+
+function showSlide(n) {
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(n, slides.length - 1));
+  slides[current].classList.add('active');
+
+  progressBar.style.width = ((current + 1) / slides.length * 100) + '%';
+  narrationEl.textContent = narrations[current];
+  counter.textContent = `${current + 1} / ${slides.length}`;
+  prevBtn.disabled = current === 0;
+  nextBtn.disabled = current === slides.length - 1;
+
+  // trigger animations
+  setTimeout(() => animateSlide(current), 80);
+}
+
+function animateSlide(idx) {
+  const slide = slides[idx];
+  // pyramid
+  slide.querySelectorAll('.pyr-box').forEach((el, i) => {
+    setTimeout(() => el.classList.add('show'), i * 120);
+  });
+  // cards
+  slide.querySelectorAll('.card').forEach((el, i) => {
+    setTimeout(() => el.classList.add('show'), i * 100);
+  });
+  // timeline
+  slide.querySelectorAll('.tl-item').forEach((el, i) => {
+    setTimeout(() => el.classList.add('show'), i * 130);
+  });
+  // flow
+  slide.querySelectorAll('.flow-box').forEach((el, i) => {
+    setTimeout(() => el.classList.add('show'), i * 100);
+  });
+}
+
+function next() {
+  if (current < slides.length - 1) showSlide(current + 1);
+  else if (isAutoPlay) stopAuto();
+}
+function prev() { if (current > 0) showSlide(current - 1); }
+
+function startAuto() {
+  isAutoPlay = true;
+  autoBtn.textContent = '⏸ 暂停';
+  autoTimer = setInterval(() => {
+    if (current < slides.length - 1) next();
+    else stopAuto();
+  }, 18000);
+}
+function stopAuto() {
+  isAutoPlay = false;
+  autoBtn.textContent = '▶ 自动播放';
+  clearInterval(autoTimer);
+}
+
+nextBtn.addEventListener('click', () => { stopAuto(); next(); });
+prevBtn.addEventListener('click', () => { stopAuto(); prev(); });
+autoBtn.addEventListener('click', () => isAutoPlay ? stopAuto() : startAuto());
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { stopAuto(); next(); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { stopAuto(); prev(); }
+});
+
+// init
+animateSlide(0);
+progressBar.style.width = (1 / slides.length * 100) + '%';
+narrationEl.textContent = narrations[0];
+</script>
+</body>
+</html>
