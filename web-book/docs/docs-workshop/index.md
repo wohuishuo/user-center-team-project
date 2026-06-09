@@ -6,13 +6,13 @@
 
 | 文档 | 写它时去看 |
 | --- | --- |
-| 1 · 项目分工表 | [团队管理](/engineering/) · [软件项目管理](/theory/11-project-management) |
+| 1 · 项目分工表 | [团队管理](/engineering/) · [软件维护与项目管理](/theory/06-management) |
 | 2 · 数据设计说明书 | [数据库设计](/project/database) · [MySQL 卡](/stack/mysql) |
-| 3.1 · 需求规格说明书(结构化) | [第2章 需求工程](/theory/02-requirements) · [需求分析](/project/requirements) |
-| 3.2 · 系统设计说明书(结构化) | [第4章 结构化设计](/theory/04-structured-design) · [后端架构](/project/backend) |
-| 4.1 · 需求规格说明书(面向对象) | [第8章 面向对象分析](/theory/08-oo-analysis) · [第7章 UML](/theory/07-uml) |
-| 4.2 · 系统设计说明书(面向对象) | [第9章 面向对象设计](/theory/09-oo-design) |
-| 5 · 软件测试报告 | [第6章 软件测试](/theory/06-testing) · [测试](/project/testing) |
+| 3.1 · 需求规格说明书(结构化) | [需求工程](/theory/02-requirements) · [需求分析](/project/requirements) |
+| 3.2 · 系统设计说明书(结构化) | [软件设计](/theory/03-design) · [后端架构](/project/backend) |
+| 4.1 · 需求规格说明书(面向对象) | [软件设计(含面向对象/UML)](/theory/03-design) |
+| 4.2 · 系统设计说明书(面向对象) | [软件设计(含面向对象/UML)](/theory/03-design) |
+| 5 · 软件测试报告 | [软件测试](/theory/05-testing) · [测试](/project/testing) |
 | 6 · 自我评价 | 自己写,真实即可 |
 
 ## 文档写作要点(来自示例文档反馈)
