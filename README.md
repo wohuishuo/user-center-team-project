@@ -8,6 +8,11 @@
 
 <br>
 
+### 📖 [**→ 点此在线阅读 ←**](https://wohuishuo.github.io/user-center-team-project/)
+
+<br>
+
+[![在线阅读](https://img.shields.io/badge/在线阅读-Read_Online-6c63ff?style=for-the-badge&logo=readthedocs&logoColor=white)](https://wohuishuo.github.io/user-center-team-project/)
 [![Stars](https://img.shields.io/github/stars/wohuishuo/user-center-team-project?style=for-the-badge&logo=github&color=6c63ff)](https://github.com/wohuishuo/user-center-team-project/stargazers)
 [![Forks](https://img.shields.io/github/forks/wohuishuo/user-center-team-project?style=for-the-badge&logo=github&color=48cfad)](https://github.com/wohuishuo/user-center-team-project/network/members)
 [![Last Commit](https://img.shields.io/github/last-commit/wohuishuo/user-center-team-project?style=for-the-badge&color=fed766)](https://github.com/wohuishuo/user-center-team-project/commits/main)
@@ -52,6 +57,11 @@
 **前端** React 19 · Vite · TypeScript · Ant Design 5 · TanStack Query
 **部署** Docker Compose · GitHub Actions
 
+## 阅读方式
+
+- 🌐 **在线阅读(推荐)**:<https://wohuishuo.github.io/user-center-team-project/>
+- 💻 **本地预览**:见下方命令
+
 ## 本地预览
 
 ```bash
@@ -81,9 +91,9 @@ npm run docs:build    # 输出到 docs/.vitepress/dist
 
 ## 部署
 
-仓库已配置 `.github/workflows/deploy.yml`:push 到 `main` 且改动 `web-book/` 时,自动构建并发布到 GitHub Pages。
+本书已发布在 GitHub Pages:<https://wohuishuo.github.io/user-center-team-project/>
 
-> 首次启用需在 **Settings → Pages** 把 Source 设为「GitHub Actions」。注意:私有仓库的 Pages 站点在免费账户下是公开的,请按需取舍。
+`.github/workflows/deploy.yml` 会在 push 到 `main` 且改动 `web-book/` 时,自动构建并重新发布。
 
 ## 参与填充 / 修订
 
