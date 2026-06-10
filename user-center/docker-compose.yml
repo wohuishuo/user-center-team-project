@@ -1,0 +1,53 @@
+# 用户中心 · 一键起全栈(前端 + 后端 + MySQL + Redis)
+# 对应网页书:实战篇 / 部署上线、技术图鉴 / Docker Compose。
+#
+# 用法:
+#   cd user-center
+#   docker compose up -d --build
+#   浏览器打开 http://localhost
+#
+# 机密通过环境变量传入(见 .env.example),不写死在文件里。
+
+services:
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: user_center
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_dev}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      # 首次启动自动建表
+      - ./backend/src/main/resources/sql/create_table.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7
+
+  backend:
+    build: ./backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/user_center?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${DB_ROOT_PASSWORD:-root_dev}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: "6379"
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-please-change-in-production-0123456789abcdef}
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  mysql-data:
