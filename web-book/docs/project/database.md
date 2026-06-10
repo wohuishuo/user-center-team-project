@@ -85,6 +85,14 @@ CREATE TABLE user (
 - **根据**:这三条分别保住了安全余量、数据可恢复、可追溯;
 - **例子**:`userAccount` 加唯一索引让登录飞快,`gender` 不加索引避免浪费。
 
+## 本章的真实代码
+
+| 内容 | 文件 |
+| --- | --- |
+| user 表建表脚本(可直接执行) | [create_table.sql](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/resources/sql/create_table.sql) |
+| User 实体(@TableLogic 逻辑删除) | [User.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/model/entity/User.java) |
+| 已产出的课程文档 | [数据设计说明书.docx](https://github.com/wohuishuo/user-center-team-project/tree/main/文档产出) |
+
 ## 对应资源
 
 - 实战:[需求分析](/project/requirements) · [认证模块](/project/auth)

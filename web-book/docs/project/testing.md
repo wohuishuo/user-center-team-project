@@ -68,6 +68,16 @@ class UserServiceTest {
 - **根据**:三层从细到粗,遵循最左原则;集成测试用真实依赖才可信;
 - **例子**:`register_shouldReject_whenPasswordTooShort` 一眼能看出它守的是哪条需求。
 
+## 本章的真实代码
+
+| 内容 | 文件 |
+| --- | --- |
+| 单元测试(6 条,需求→断言) | [UserServiceTest.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/test/java/com/usercenter/service/UserServiceTest.java) |
+| 集成测试(MockMvc 全链路 3 条) | [UserApiIntegrationTest.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/test/java/com/usercenter/UserApiIntegrationTest.java) |
+| 已产出的课程文档 | [软件测试报告.docx](https://github.com/wohuishuo/user-center-team-project/tree/main/文档产出) |
+
+> 运行:`cd user-center/backend && mvn test`(需本地 MySQL 在运行)。9 条全部通过。
+
 ## 对应资源
 
 - 理论:[第5章 软件测试](/theory/05-testing)

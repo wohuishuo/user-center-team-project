@@ -90,6 +90,16 @@ push 到 main
 - **根据**:容器消除"环境不一致",CI/CD 消除"手动易出错";
 - **例子**:多阶段构建让后端镜像只留运行所需,小而稳。
 
+## 本章的真实代码
+
+| 内容 | 文件 |
+| --- | --- |
+| Compose 编排(四服务 + 健康检查 + 自动建表) | [docker-compose.yml](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/docker-compose.yml) |
+| 后端多阶段 Dockerfile | [backend/Dockerfile](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/Dockerfile) |
+| 前端多阶段 Dockerfile + Nginx | [frontend/Dockerfile](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/frontend/Dockerfile) · [nginx.conf](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/frontend/nginx.conf) |
+| CI(push 即云端构建验证) | [user-center-ci.yml](https://github.com/wohuishuo/user-center-team-project/blob/main/.github/workflows/user-center-ci.yml) |
+| 部署说明(本地 + Docker) | [DEPLOY.md](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/DEPLOY.md) |
+
 ## 对应资源
 
 - 技术卡:[Docker Compose](/stack/docker)

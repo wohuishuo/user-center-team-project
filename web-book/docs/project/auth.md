@@ -192,6 +192,19 @@ void register_shouldReject_whenPasswordTooShort() {
 - **错误提示要模糊**,不泄露账号是否存在;
 - **返回必须脱敏**,密码永不出库。
 
+## 本章的真实代码
+
+本章讲的每一步,仓库 `user-center/` 里都有对应实现(已跑通、有测试):
+
+| 内容 | 文件 |
+| --- | --- |
+| 注册/登录业务逻辑(BCrypt) | [UserServiceImpl.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/service/impl/UserServiceImpl.java) |
+| JWT 签发与解析 | [JwtUtils.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/util/JwtUtils.java) |
+| JWT 过滤器(请求识别用户) | [JwtAuthenticationFilter.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/config/JwtAuthenticationFilter.java) |
+| 安全配置(放行/拦截/BCrypt Bean) | [SecurityConfig.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/config/SecurityConfig.java) |
+| 注册/登录接口 | [UserController.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/controller/UserController.java) |
+| 本章需求对应的单元测试 | [UserServiceTest.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/test/java/com/usercenter/service/UserServiceTest.java) |
+
 ## 对应资源
 
 - 理论:[第2章 需求工程](/theory/02-requirements)(登录用例)

@@ -69,6 +69,16 @@ public BaseResponse<Boolean> delete(@RequestBody long id, HttpServletRequest req
 - **根据**:不鉴权就越权;返回脱敏、删除走逻辑删;
 - **例子**:前端隐藏菜单 + 后端校验角色,双保险缺一不可。
 
+## 本章的真实代码
+
+| 内容 | 文件 |
+| --- | --- |
+| 查询/删除接口 + ensureAdmin 鉴权 | [UserController.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/controller/UserController.java) |
+| 分页/模糊查询 + Redis 缓存实现 | [UserServiceImpl.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/service/impl/UserServiceImpl.java) |
+| 分页插件配置 | [MybatisPlusConfig.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/config/MybatisPlusConfig.java) |
+| Redis 缓存配置(TTL 5 分钟) | [RedisConfig.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/config/RedisConfig.java) |
+| 前端用户管理表格 | [UserManage.tsx](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/frontend/src/pages/UserManage.tsx) |
+
 ## 对应资源
 
 - 实战:[认证模块](/project/auth) · [数据库设计](/project/database) · [后端架构](/project/backend)

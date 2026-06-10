@@ -29,6 +29,10 @@
 
 > [认证模块](/project/auth) 是实战篇结构最完整的一章,适合作为新增章节的范例。
 
+::: tip 本篇的代码是真实存在的
+本篇讲的项目**已经完整实现并跑通**,代码在仓库 [`user-center/`](https://github.com/wohuishuo/user-center-team-project/tree/main/user-center) 目录(前后端 + 数据库脚本 + 测试 + Docker 配置,CI 构建通过)。每章末尾的「本章的真实代码」区块直接链到对应文件——看完讲解,马上能看真实现。运行方法见仓库 [README](https://github.com/wohuishuo/user-center-team-project#-运行项目)。
+:::
+
 ::: tip 先看全景再动手
 动手前先扫一眼 [技术全景图](/guide/tech-landscape),知道每个技术解决什么问题、彼此怎么协作,再回来从需求开始做,会顺很多。
 :::

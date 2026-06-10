@@ -74,6 +74,16 @@ export default (currentUser) => ({
 - **根据**:全局状态记住当前用户,各处直接读;
 - **例子**:`access.ts` 控制菜单显隐,但安全闸门在后端。
 
+## 本章的真实代码
+
+| 内容 | 文件 |
+| --- | --- |
+| Vite 配置(/api 代理) | [vite.config.ts](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/frontend/vite.config.ts) |
+| axios 实例(自动带 token、统一解包) | [request.ts](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/frontend/src/api/request.ts) |
+| zustand 全局状态(当前用户) | [store/user.ts](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/frontend/src/store/user.ts) |
+| 路由守卫(RequireAuth / RequireAdmin) | [App.tsx](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/frontend/src/App.tsx) |
+| 登录 / 注册 / 用户管理页面 | [pages/](https://github.com/wohuishuo/user-center-team-project/tree/main/user-center/frontend/src/pages) |
+
 ## 对应资源
 
 - 技术卡:[React 19 + Vite](/stack/react-vite) · [Ant Design 5](/stack/ant-design) · [TanStack Query](/stack/tanstack-query)

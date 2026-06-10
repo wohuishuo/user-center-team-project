@@ -97,6 +97,17 @@ src/main/java/com/example/usercenter/
 - **根据**:分层落实高内聚低耦合,格式校验在 Controller、业务校验在 Service;
 - **例子**:统一返回 + 全局异常,让前端一套逻辑通吃、业务代码只管抛错。
 
+## 本章的真实代码
+
+| 内容 | 文件 |
+| --- | --- |
+| 统一返回 BaseResponse | [BaseResponse.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/common/BaseResponse.java) |
+| 业务错误码 | [ErrorCode.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/common/ErrorCode.java) |
+| 自定义业务异常 | [BusinessException.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/exception/BusinessException.java) |
+| 全局异常处理器 | [GlobalExceptionHandler.java](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/java/com/usercenter/exception/GlobalExceptionHandler.java) |
+| Controller / Service / Mapper 分层 | [controller/](https://github.com/wohuishuo/user-center-team-project/tree/main/user-center/backend/src/main/java/com/usercenter/controller) · [service/](https://github.com/wohuishuo/user-center-team-project/tree/main/user-center/backend/src/main/java/com/usercenter/service) · [mapper/](https://github.com/wohuishuo/user-center-team-project/tree/main/user-center/backend/src/main/java/com/usercenter/mapper) |
+| 全局配置(/api 前缀、数据源) | [application.yml](https://github.com/wohuishuo/user-center-team-project/blob/main/user-center/backend/src/main/resources/application.yml) |
+
 ## 对应资源
 
 - 理论:[软件设计](/theory/03-design)
