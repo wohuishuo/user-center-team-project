@@ -7,6 +7,13 @@
       "runtimeArgs": ["run", "docs:dev"],
       "cwd": "web-book",
       "port": 5173
+    },
+    {
+      "name": "frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "user-center/frontend",
+      "port": 5174
     }
   ]
 }
