@@ -58,7 +58,16 @@ docker compose up -d --build
 # 浏览器打开 http://localhost
 ```
 
-四个容器自动就绪:前端(Nginx :80)、后端(Spring Boot :8080)、MySQL 8(自动建表)、Redis 7。
+四个容器自动就绪:前端(Nginx :80)、后端(Spring Boot :8080)、MySQL 8(自动建表 + 演示账号)、Redis 7。
+
+**内置演示账号,开箱即登录:**
+
+| 账号 | 密码 | 角色 |
+| --- | --- | --- |
+| `root` | `12345678` | 管理员(可进用户管理) |
+| `demo` | `12345678` | 普通用户 |
+
+> ⚠️ 演示账号仅限本地/演示环境,部署生产前请从 `create_table.sql` 删除。
 
 > Windows 首次装 Docker 见 [`user-center/DEPLOY.md`](user-center/DEPLOY.md)(需启用 WSL2 并重启)。
 
@@ -92,7 +101,7 @@ npm install                   # 首次
 npm run dev                   # 打开 http://localhost:5174
 ```
 
-注册一个账号即可体验;想试管理员功能,把数据库中该用户的 `userRole` 改为 `1` 后重新登录。
+用演示账号 `root / 12345678`(管理员)或 `demo / 12345678` 直接登录,也可自己注册。
 
 > 常见坑(中文用户名路径、npm 缓存)与详细环境说明:[`user-center/DEV-SETUP.md`](user-center/DEV-SETUP.md)
 

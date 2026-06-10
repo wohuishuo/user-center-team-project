@@ -30,3 +30,14 @@ CREATE TABLE IF NOT EXISTS user (
   UNIQUE KEY uk_user_account (userAccount),
   UNIQUE KEY uk_planet_code (planetCode)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+
+-- ─────────────────────────────────────────────
+-- 演示账号(仅本地/演示环境,生产请删除!)
+-- root / 12345678  → 管理员
+-- demo / 12345678  → 普通用户
+-- 密码为 BCrypt 密文;INSERT IGNORE 保证脚本可重复执行
+-- ─────────────────────────────────────────────
+INSERT IGNORE INTO user (userAccount, userPassword, username, planetCode, userRole, userStatus)
+VALUES
+  ('root', '$2a$10$Wvj4b9mod8tAGKy.lbBCPeMp.zFg3TDf9V9.XK2iqYqdIethBtfzy', 'root', '1', 1, 0),
+  ('demo', '$2a$10$qMQs.g604m2sIP3q0IEHeuiyZbzUPX181DTZN/D/Qt5eD6yEyl2eu', 'demo', '2', 0, 0);

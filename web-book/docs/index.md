@@ -10,7 +10,10 @@ hero:
       text: 开始阅读
       link: /guide/preface
     - theme: alt
-      text: 2026 技术全景图
+      text: 🎬 功能演示
+      link: /project/demo
+    - theme: alt
+      text: 技术全景图
       link: /guide/tech-landscape
     - theme: alt
       text: GitHub

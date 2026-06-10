@@ -65,6 +65,7 @@ export default defineConfig({
           text: '③ 用户中心实战篇(2026)',
           items: [
             { text: '本篇导读', link: '/project/' },
+            { text: '功能演示(幻灯片)🎬', link: '/project/demo' },
             { text: '需求分析', link: '/project/requirements' },
             { text: '数据库设计', link: '/project/database' },
             { text: '认证模块:注册与登录', link: '/project/auth' },
