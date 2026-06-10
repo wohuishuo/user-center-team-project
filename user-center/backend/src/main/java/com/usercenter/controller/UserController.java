@@ -7,8 +7,8 @@ import com.usercenter.exception.BusinessException;
 import com.usercenter.common.ErrorCode;
 import com.usercenter.model.dto.UserLoginRequest;
 import com.usercenter.model.dto.UserRegisterRequest;
-import com.usercenter.model.entity.User;
 import com.usercenter.model.vo.LoginUserVO;
+import com.usercenter.model.vo.PageResult;
 import com.usercenter.model.vo.UserVO;
 import com.usercenter.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,10 +54,38 @@ public class UserController {
     @GetMapping("/current")
     public BaseResponse<UserVO> current() {
         Long userId = SecurityUtils.getCurrentUserId();
-        User user = userService.getById(userId);
-        if (user == null) {
+        UserVO vo = userService.getCachedUserVO(userId); // 走 Redis 缓存
+        if (vo == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN);
         }
-        return ResultUtils.success(userService.toUserVO(user));
+        return ResultUtils.success(vo);
+    }
+
+    @Operation(summary = "按用户名分页查询用户(仅管理员)")
+    @GetMapping("/search")
+    public BaseResponse<PageResult<UserVO>> search(
+            @RequestParam(required = false) String username,
+            @RequestParam(defaultValue = "1") long current,
+            @RequestParam(defaultValue = "10") long pageSize) {
+        ensureAdmin();
+        return ResultUtils.success(userService.searchUsers(username, current, pageSize));
+    }
+
+    @Operation(summary = "删除用户(仅管理员,逻辑删除)")
+    @PostMapping("/delete")
+    public BaseResponse<Boolean> delete(@RequestBody Long id) {
+        ensureAdmin();
+        if (id == null || id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        return ResultUtils.success(userService.removeUser(id));
+    }
+
+    /** 管理操作前的鉴权:非管理员直接拒绝。 */
+    private void ensureAdmin() {
+        SecurityUtils.getCurrentUserId();           // 未登录抛 NOT_LOGIN
+        if (!SecurityUtils.isAdmin()) {
+            throw new BusinessException(ErrorCode.NO_AUTH);
+        }
     }
 }

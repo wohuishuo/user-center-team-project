@@ -1,5 +1,6 @@
 package com.usercenter.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.usercenter.common.ErrorCode;
 import com.usercenter.common.UserConstant;
@@ -7,13 +8,18 @@ import com.usercenter.exception.BusinessException;
 import com.usercenter.mapper.UserMapper;
 import com.usercenter.model.entity.User;
 import com.usercenter.model.vo.LoginUserVO;
+import com.usercenter.model.vo.PageResult;
 import com.usercenter.model.vo.UserVO;
 import com.usercenter.service.UserService;
 import com.usercenter.util.JwtUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -104,6 +110,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UserVO vo = new UserVO();
         BeanUtils.copyProperties(user, vo); // 不含 userPassword 字段,天然脱敏
         return vo;
+    }
+
+    @Override
+    public PageResult<UserVO> searchUsers(String username, long current, long pageSize) {
+        Page<User> page = this.lambdaQuery()
+                .like(StringUtils.hasText(username), User::getUsername, username)
+                .page(new Page<>(current, pageSize));
+        List<UserVO> records = page.getRecords().stream().map(this::toUserVO).toList();
+        return new PageResult<>(records, page.getTotal(), current, pageSize);
+    }
+
+    @Override
+    @CacheEvict(value = "userVO", key = "#id")   // 删除后清掉该用户缓存
+    public boolean removeUser(long id) {
+        return this.removeById(id);              // 逻辑删除:UPDATE ... SET isDelete=1
+    }
+
+    @Override
+    @Cacheable(value = "userVO", key = "#id")    // 命中缓存则不查库
+    public UserVO getCachedUserVO(long id) {
+        return toUserVO(this.getById(id));
     }
 
     private static boolean isBlank(String s) {

@@ -3,6 +3,7 @@ package com.usercenter.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.usercenter.model.entity.User;
 import com.usercenter.model.vo.LoginUserVO;
+import com.usercenter.model.vo.PageResult;
 import com.usercenter.model.vo.UserVO;
 
 /**
@@ -18,4 +19,13 @@ public interface UserService extends IService<User> {
 
     /** 脱敏:User -> UserVO。 */
     UserVO toUserVO(User user);
+
+    /** 按用户名模糊分页查询(管理员)。 */
+    PageResult<UserVO> searchUsers(String username, long current, long pageSize);
+
+    /** 逻辑删除用户(管理员)。 */
+    boolean removeUser(long id);
+
+    /** 按 id 取脱敏用户,结果走 Redis 缓存。 */
+    UserVO getCachedUserVO(long id);
 }
