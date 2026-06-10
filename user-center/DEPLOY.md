@@ -1,6 +1,6 @@
 # 部署说明
 
-两种运行方式:**A. 本地开发**(已验证可用),**B. Docker 一键部署**(配置就绪,需先装 Docker)。
+两种运行方式:**A. 本地开发**,**B. Docker 一键部署**。两种均已在本机实跑验证通过。
 
 ## A. 本地开发(无需 Docker)
 
@@ -36,25 +36,19 @@ docker compose up -d --build
 四个容器:前端(Nginx,80)、后端(Spring Boot,8080)、MySQL 8、Redis 7。
 MySQL 首次启动会自动执行 `create_table.sql` 建表。
 
-### 本机安装 Docker 的前提(需你本人操作)
+### 常用 Docker 命令速查
 
-本机当前没有 Docker 引擎,且 WSL2 未启用。要在 Windows 跑 Docker,需:
+```powershell
+docker compose up -d --build   # 构建并后台启动全部服务
+docker compose ps              # 看哪些容器在跑(STATUS 应为 Up)
+docker compose logs -f backend # 跟踪后端日志(Ctrl+C 退出)
+docker compose restart backend # 重启某个服务
+docker compose down            # 停止并移除容器(数据 volume 保留)
+docker compose down -v         # ⚠️ 连数据一起删(慎用)
+```
 
-1. **以管理员身份**启用 WSL2 并安装(会重启):
-   ```powershell
-   wsl --install
-   ```
-   重启后等待 Ubuntu 初始化完成。
-2. 安装 **Docker Desktop**(官网 https://www.docker.com/products/docker-desktop/ 下载安装),
-   首次启动**接受其许可协议**,并在设置里启用 "Use WSL 2 based engine"。
-3. 验证:
-   ```powershell
-   docker version
-   docker compose version
-   ```
-4. 回到上面的 `docker compose up -d --build`。
-
-> 这几步涉及管理员权限、启用系统虚拟化功能、重启电脑、接受 Docker 许可协议,需由你本人完成。
+> 改了代码想生效:重新 `docker compose up -d --build`(只重建有改动的镜像)。
+> 拉镜像偶发网络 EOF 失败:重试同一条命令即可。
 
 ## CI
 
