@@ -1,0 +1,22 @@
+package com.usercenter.common;
+
+/**
+ * 构造统一返回的工具类。
+ */
+public class ResultUtils {
+
+    private ResultUtils() {
+    }
+
+    public static <T> BaseResponse<T> success(T data) {
+        return new BaseResponse<>(ErrorCode.SUCCESS.getCode(), data, "ok");
+    }
+
+    public static <T> BaseResponse<T> error(ErrorCode errorCode, String message) {
+        return new BaseResponse<>(errorCode.getCode(), null, message);
+    }
+
+    public static <T> BaseResponse<T> error(int code, String message) {
+        return new BaseResponse<>(code, null, message);
+    }
+}
