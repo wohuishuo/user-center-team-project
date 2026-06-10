@@ -1,0 +1,11 @@
+# 后端
+backend/target/
+*.class
+# 前端
+frontend/node_modules/
+frontend/dist/
+# 机密与本地配置
+**/.env
+**/application-local.yml
+*.log
+.DS_Store
