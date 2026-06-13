@@ -41,13 +41,15 @@ public class UserController {
         return ResultUtils.success(id);
     }
 
-    @Operation(summary = "登录")
+    @Operation(summary = "登录(成功后异步发布 UserLogin 事件)")
     @PostMapping("/login")
-    public BaseResponse<LoginUserVO> login(@RequestBody UserLoginRequest req) {
+    public BaseResponse<LoginUserVO> login(@RequestBody UserLoginRequest req,
+                                           jakarta.servlet.http.HttpServletRequest httpReq) {
         if (req == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        return ResultUtils.success(userService.userLogin(req.getUserAccount(), req.getUserPassword()));
+        return ResultUtils.success(userService.userLogin(
+                req.getUserAccount(), req.getUserPassword(), req.getLoginType(), httpReq.getRemoteAddr()));
     }
 
     @Operation(summary = "获取当前登录用户")

@@ -46,6 +46,11 @@
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
             <version>${mybatis-plus.version}</version>
         </dependency>
+        <!-- RabbitMQ(发布 UserLogin 领域事件 → 书域统计服务消费) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
         <!-- Redis(缓存 / 共享登录态) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

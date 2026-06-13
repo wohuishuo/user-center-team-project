@@ -34,10 +34,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+    private final com.usercenter.event.UserEventPublisher eventPublisher;
 
-    public UserServiceImpl(PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, JwtUtils jwtUtils,
+                           com.usercenter.event.UserEventPublisher eventPublisher) {
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -82,7 +85,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public LoginUserVO userLogin(String userAccount, String userPassword) {
+    public LoginUserVO userLogin(String userAccount, String userPassword, String loginType, String ipAddress) {
         // 1. 参数校验
         if (isBlank(userAccount) || isBlank(userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
@@ -99,6 +102,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         // 4. 签发 JWT + 返回脱敏用户
         String token = jwtUtils.createToken(user.getId(), user.getUserRole());
+        // 5. 异步发布 UserLogin 事件(旁路:失败不影响登录)
+        String type = (loginType == null || loginType.isBlank()) ? "Web" : loginType;
+        eventPublisher.publishLogin(new com.usercenter.event.UserLoginEvent(
+                user.getId(), type, java.time.LocalDateTime.now(), ipAddress));
         return new LoginUserVO(token, toUserVO(user));
     }
 

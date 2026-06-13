@@ -14,8 +14,8 @@ public interface UserService extends IService<User> {
     /** 注册,返回新用户 id。 */
     long userRegister(String userAccount, String userPassword, String checkPassword, String planetCode);
 
-    /** 登录,返回 JWT + 脱敏用户。 */
-    LoginUserVO userLogin(String userAccount, String userPassword);
+    /** 登录,返回 JWT + 脱敏用户;成功后异步发布 UserLogin 事件(loginType:App/Web/Desktop)。 */
+    LoginUserVO userLogin(String userAccount, String userPassword, String loginType, String ipAddress);
 
     /** 脱敏:User -> UserVO。 */
     UserVO toUserVO(User user);

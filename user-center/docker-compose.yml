@@ -40,6 +40,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${DB_ROOT_PASSWORD:-root_dev}
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: "6379"
+      # RabbitMQ 跑在宿主机(scoop),容器经 host.docker.internal 访问;MQ 不在也不影响登录(事件旁路)
+      RABBITMQ_HOST: host.docker.internal
       JWT_SECRET: ${JWT_SECRET:-dev-only-secret-please-change-in-production-0123456789abcdef}
 
   frontend:

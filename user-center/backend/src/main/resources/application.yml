@@ -6,6 +6,11 @@ server:
 spring:
   application:
     name: user-center
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: 5672
+    username: guest
+    password: guest
   data:
     redis:
       host: localhost
