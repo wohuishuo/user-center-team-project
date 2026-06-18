@@ -1,0 +1,22 @@
+name: User Center Quality
+on:
+  pull_request:
+    paths: ['user-center/**']
+  push:
+    branches: [main]
+    paths: ['user-center/**']
+jobs:
+  verify:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: user-center
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '17', cache: maven, cache-dependency-path: user-center/backend/pom.xml }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm, cache-dependency-path: user-center/frontend/package-lock.json }
+      - run: npm ci
+        working-directory: user-center/frontend
+      - run: powershell -ExecutionPolicy Bypass -File scripts/verify.ps1

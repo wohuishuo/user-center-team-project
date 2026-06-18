@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Input, Popconfirm, Space, Table, Tag, App as AntApp } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { searchUsers, deleteUser, type UserVO } from "../api/user";
 
@@ -20,10 +21,10 @@ export default function UserManage() {
       message.success("已删除");
       qc.invalidateQueries({ queryKey: ["users"] });
     },
-    onError: (e: any) => message.error(e?.message || "删除失败"),
+    onError: (e: unknown) => message.error(e instanceof Error ? e.message : "删除失败"),
   });
 
-  const columns = [
+  const columns: ColumnsType<UserVO> = [
     { title: "ID", dataIndex: "id", width: 70 },
     { title: "账号", dataIndex: "userAccount" },
     { title: "昵称", dataIndex: "username" },
@@ -60,7 +61,7 @@ export default function UserManage() {
       <Table
         rowKey="id"
         loading={isLoading}
-        columns={columns as any}
+        columns={columns}
         dataSource={data?.records || []}
         pagination={{
           current: page.current,

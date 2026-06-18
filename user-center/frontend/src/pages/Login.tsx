@@ -21,8 +21,8 @@ export default function Login() {
       }
       message.success("登录成功");
       navigate("/");
-    } catch (e: any) {
-      message.error(e?.message || "登录失败");
+    } catch (e: unknown) {
+      message.error(e instanceof Error ? e.message : "登录失败");
     }
   };
 

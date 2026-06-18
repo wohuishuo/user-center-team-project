@@ -6,13 +6,18 @@ export default function Register() {
   const navigate = useNavigate();
   const { message } = AntApp.useApp();
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: {
+    userAccount: string;
+    userPassword: string;
+    checkPassword: string;
+    planetCode: string;
+  }) => {
     try {
       await register(values);
       message.success("注册成功,请登录");
       navigate("/login");
-    } catch (e: any) {
-      message.error(e?.message || "注册失败");
+    } catch (e: unknown) {
+      message.error(e instanceof Error ? e.message : "注册失败");
     }
   };
 
