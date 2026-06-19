@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Map;
 
@@ -16,11 +17,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * 接口集成测试:走完整的注册 → 登录 → 取当前用户链路(连真实 MySQL)。
+ * 接口集成测试:走完整的注册 → 登录 → 取当前用户链路。
+ * MySQL 由 docker-compose.test.yml 临时创建，测试不会依赖或污染开发数据库。
  * 对应网页书:理论篇 / 软件测试(集成测试)、实战篇 / 测试。
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class UserApiIntegrationTest {
 
     @Autowired

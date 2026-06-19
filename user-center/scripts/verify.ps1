@@ -1,9 +1,8 @@
 $ErrorActionPreference = 'Stop'
 & "$PSScriptRoot\lint.ps1"
-Push-Location backend
-mvn -B verify
-Pop-Location
-Push-Location frontend
+& "$PSScriptRoot\test-backend.ps1"
+$root = Split-Path -Parent $PSScriptRoot
+Push-Location (Join-Path $root 'frontend')
 npm run test
 npm run build
 Pop-Location

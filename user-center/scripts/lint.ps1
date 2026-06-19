@@ -1,9 +1,10 @@
 $ErrorActionPreference = 'Stop'
-$bad = Get-ChildItem backend/src -Recurse -File -Include *.java,*.yml,*.yaml | Select-String -Pattern "`t| +$"
+$root = Split-Path -Parent $PSScriptRoot
+$bad = Get-ChildItem (Join-Path $root 'backend/src') -Recurse -File -Include *.java,*.yml,*.yaml | Select-String -Pattern "`t| +$"
 if ($bad) { $bad | ForEach-Object { Write-Error "$($_.Path):$($_.LineNumber) invalid whitespace" } }
-Push-Location backend
+Push-Location (Join-Path $root 'backend')
 mvn -q -DskipTests compile
 Pop-Location
-Push-Location frontend
+Push-Location (Join-Path $root 'frontend')
 npm run lint
 Pop-Location

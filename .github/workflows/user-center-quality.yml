@@ -7,16 +7,22 @@ on:
     paths: ['user-center/**']
 jobs:
   verify:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: user-center
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
-        with: { distribution: temurin, java-version: '17', cache: maven, cache-dependency-path: user-center/backend/pom.xml }
+        with: { distribution: temurin, java-version: '21', cache: maven, cache-dependency-path: user-center/backend/pom.xml }
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm, cache-dependency-path: user-center/frontend/package-lock.json }
       - run: npm ci
         working-directory: user-center/frontend
-      - run: powershell -ExecutionPolicy Bypass -File scripts/verify.ps1
+      - name: Backend tests with disposable MySQL
+        shell: pwsh
+        run: ./scripts/test-backend.ps1
+        working-directory: user-center
+      - name: Frontend lint, test and build
+        run: npm run verify
+        working-directory: user-center/frontend
